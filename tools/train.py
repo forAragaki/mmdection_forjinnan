@@ -82,7 +82,7 @@ def main():
         train_dataset,
         cfg,
         distributed=distributed,
-        validate=args.validate,
+        validate=True,
         logger=logger)
 
 

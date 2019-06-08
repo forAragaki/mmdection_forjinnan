@@ -25,7 +25,7 @@ model = dict(
         in_channels=256,
         fc_out_channels=1024,
         roi_feat_size=7,
-        num_classes=81,
+        num_classes=6,
         target_means=[0., 0., 0., 0.],
         target_stds=[0.1, 0.1, 0.2, 0.2],
         reg_class_agnostic=False),
@@ -39,7 +39,7 @@ model = dict(
         num_convs=4,
         in_channels=256,
         conv_out_channels=256,
-        num_classes=81))
+        num_classes=6))
 # model training and testing settings
 train_cfg = dict(
     rcnn=dict(
@@ -61,7 +61,7 @@ train_cfg = dict(
 test_cfg = dict(
     rcnn=dict(
         score_thr=0.05,
-        nms=dict(type='nms', iou_thr=0.5),
+        nms=dict(type='soft_nms', iou_thr=0.5),
         max_per_img=100,
         mask_thr_binary=0.5))
 # dataset settings
@@ -109,7 +109,7 @@ data = dict(
         with_label=False,
         test_mode=True))
 # optimizer
-optimizer = dict(type='SGD', lr=0.02, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(
@@ -117,8 +117,8 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=1.0 / 3,
-    step=[8, 11])
-checkpoint_config = dict(interval=1)
+    step=[12, 16])
+checkpoint_config = dict(interval=4)
 # yapf:disable
 log_config = dict(
     interval=50,
@@ -128,7 +128,7 @@ log_config = dict(
     ])
 # yapf:enable
 # runtime settings
-total_epochs = 12
+total_epochs = 20
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = './work_dirs/fast_mask_rcnn_r101_fpn_1x'
